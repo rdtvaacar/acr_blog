@@ -17,6 +17,14 @@ use App\Http\Controllers\Controller;
 
 class BlogController extends Controller
 {
+    function sira_update(Request $request)
+    {
+        $sira  = $request->sira;
+        $id    = $request->id;
+        $model = new Blog_makale();
+        $model->where('id', $id)->update(['sira' => $sira]);
+    }
+
     function blog_galery(my $my)
     {
         $blog_views = self::blog_views($my);
@@ -26,7 +34,7 @@ class BlogController extends Controller
     function blog_views($my)
     {
         $blog_model = new Blog_makale();
-        $blogs      = $blog_model->with(['file'])->get();
+        $blogs      = $blog_model->with(['file'])->orderBy('sira', 'desc')->get();
         return view('Acr_blogv::blog_views', compact('blogs', 'my'))->render();
     }
 
@@ -48,7 +56,7 @@ class BlogController extends Controller
         $id         = $request->id;
         $blog_model = new Blog_makale();
         $blog       = $blog_model->with(['file'])->where('id', $id)->first();
-        $blogs      = $blog_model->with(['file'])->where('id', '!=', $id)->get();
+        $blogs      = $blog_model->with(['file'])->where('id', '!=', $id)->orderBy('sira', 'desc')->paginate(20);
         return view('Acr_blogv::blog', compact('blog', 'blogs', 'my'));
 
     }
@@ -129,6 +137,7 @@ class BlogController extends Controller
                 'acr_file_id' => $acr_file_id
             ];
             $id          = $blog_model->insertGetId($data);
+            $blog_model->where('id', $id)->update(['sira' => $id]);
             return redirect()->to('/acr/blog/yeni?id=' . $id);
         } else {
             $acr_file_id = $blog->acr_file_id;
@@ -150,14 +159,5 @@ class BlogController extends Controller
     {
         $blog_model = new Blog_makale();
         $blog_model->where('id', $request->id)->delete();
-    }
-
-    function file_delete(Request $request)
-    {
-        $file_model = new Acr_files_childs();
-        $file       = $file_model->where('id', $request->id)->first();
-        @unlink(base_path() . '/public_html//acr_files/' . $file->acr_file_id . '/thumbs/' . $file->file_name . '.' . $file->file_type);
-        @unlink(base_path() . '/public_html/acr_files/' . $file->acr_file_id . '/' . $file->file_name . '.' . $file->file_type);
-        $file_model->where('id', $request->id)->delete();
     }
 }

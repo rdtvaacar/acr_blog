@@ -6,6 +6,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('/oku', 'BlogController@blog_oku');
         Route::group(['middleware' => ['auth']], function () {
             Route::group(['middleware' => ['admin']], function () {
+                Route::post('/sira/update', 'BlogController@sira_update');
                 Route::get('/list', 'BlogController@blog');
                 Route::get('/yeni', 'BlogController@yeni');
                 Route::post('/create', 'BlogController@create');

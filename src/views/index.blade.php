@@ -27,6 +27,8 @@
                                 <a style="font-size: 14pt; margin-right: 15px;" href="/acr/blog/yeni?id={{$blog->id}}" class="glyphicon  glyphicon-edit"></a>
                                 <span onclick="sil({{$blog->id}})" style="font-size: 14pt; cursor: pointer;" class="glyphicon glyphicon-trash"></span>
                             </td>
+                            <td><input name="sira_{{$blog->id}}" id="sira_{{$blog->id}}" value="{{$blog->sira}}"><span onclick="sira_update({{$blog->id}})" style="cursor:pointer; "
+                                                                                                                       class="glyphicon glyphicon-floppy-disk btn btn-success btn-sm"></span></td>
                             <td>{{$blog->name}}</td>
                             <td>{{$blog->created_at}}</td>
                             <td>{{$blog->updated_at}}</td>
@@ -80,5 +82,19 @@
 
             }
         }
+
+        function sira_update(id) {
+            var sira = $('#sira_' + id).val();
+            $.ajax({
+                type: 'post',
+                url: '/acr/blog/sira/update',
+                data: 'id=' + id + '&sira=' + sira,
+                success: function () {
+
+                }
+            });
+        }
+
+
     </script>
 @stop
