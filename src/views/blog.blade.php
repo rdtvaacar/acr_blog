@@ -4,8 +4,9 @@
         <div class="box box-primary">
             <div class="box-header with-border"><strong>{{$blog->name}}</strong></div>
             <div class="box-body">
-                <?php $img = empty(@$blog->file->file_name) ? '/img/tmp_tb.png' : '/acr_files/' . @$blog->acr_file_id . '/thumbs/' . @$blog->file->file_name . '.' . @$blog->file->file_type ?>
-                <img style="float: left; margin: 10px; width: 300px;" class="img-thumbnail" src="/acr/blog/get_file/{{$blog->acr_file_id}}/{{@$blog->file->file_name}}/med"/>
+
+                <?php $img = empty(@$blog->file->file_name) ? '/img/tmp_tb.png' : '/acr/fl/get_file/' . $blog->acr_file_id . '/' . @$blog->file->file_name . '/thumbs'?>
+                <img style="float: left; margin: 10px; width: 300px;" class="img-thumbnail" src="{!! $img !!}"/>
                 {!! $blog->icerik !!}
             </div>
         </div>

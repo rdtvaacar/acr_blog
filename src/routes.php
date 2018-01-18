@@ -8,7 +8,6 @@ Route::group(['middleware' => ['web']], function () {
             Route::group(['middleware' => ['admin']], function () {
                 Route::get('/list', 'BlogController@blog');
                 Route::get('/yeni', 'BlogController@yeni');
-
                 Route::post('/create', 'BlogController@create');
                 Route::post('/delete', 'BlogController@delete');
                 Route::post('/file/delete', 'BlogController@file_delete');
