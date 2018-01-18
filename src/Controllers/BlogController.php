@@ -17,11 +17,17 @@ use App\Http\Controllers\Controller;
 
 class BlogController extends Controller
 {
-    function blog_galery(my $my)
+    function blog_galery()
+    {
+        $blog_views = self::blog_views();
+        return view('Acr_blogv::blog_galery', compact('blog_views'));
+    }
+
+    function blog_views(my $my)
     {
         $blog_model = new Blog_makale();
         $blogs      = $blog_model->with(['file'])->get();
-        return view('Acr_blogv::blog_galery', compact('blogs', 'my'));
+        return view('Acr_blogv::blog_galery', compact('blogs', 'my'))->render();
     }
 
     function blogSayYaz($sayi, $yazi)
@@ -37,13 +43,13 @@ class BlogController extends Controller
         }
     }
 
-    function blog_oku(Request $request,my $my)
+    function blog_oku(Request $request, my $my)
     {
         $id         = $request->id;
         $blog_model = new Blog_makale();
         $blog       = $blog_model->with(['file'])->where('id', $id)->first();
         $blogs      = $blog_model->with(['file'])->where('id', '!=', $id)->get();
-        return view('Acr_blogv::blog', compact('blog', 'blogs','my'));
+        return view('Acr_blogv::blog', compact('blog', 'blogs', 'my'));
 
     }
 
