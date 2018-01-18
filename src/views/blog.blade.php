@@ -1,11 +1,11 @@
-@extends('index')
-@section('acr_index')
+@extends('acr_blog.blog')
+@section('acr_blog')
     <div class="col-lg-8">
         <div class="box box-primary">
             <div class="box-header with-border"><strong>{{$blog->name}}</strong></div>
             <div class="box-body">
-                <?php $img = empty($blog->file->file_name) ? '/img/tmp_tb.png' : '/acr_files/' . $blog->acr_file_id . '/thumbs/' . $blog->file->file_name . '.' . $blog->file->file_type ?>
-                <img style="float: left; margin: 10px; width: 300px;" class="img-thumbnail" src="/acr/blog/get_file/{{$blog->acr_file_id}}/{{$blog->file->file_name}}/med"/>
+                <?php $img = empty(@$blog->file->file_name) ? '/img/tmp_tb.png' : '/acr_files/' . @$blog->acr_file_id . '/thumbs/' . @$blog->file->file_name . '.' . @$blog->file->file_type ?>
+                <img style="float: left; margin: 10px; width: 300px;" class="img-thumbnail" src="/acr/blog/get_file/{{$blog->acr_file_id}}/{{@$blog->file->file_name}}/med"/>
                 {!! $blog->icerik !!}
             </div>
         </div>
@@ -16,9 +16,6 @@
             <div class="box box-primary">
                 <div class="box-header with-border"><strong>Diğer Yazılar</strong></div>
                 <div class="box-body">
-                    <ul>
-
-                    </ul>
                     <div class="box-group" id="accordion">
                         <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
                         @foreach($blogs as $key=> $blog)
@@ -43,4 +40,21 @@
             </div>
         </div>
     </div>
+@stop
+@section('footer')
+    <script>
+        function acr_blog_sil(id) {
+            if (confirm('Silmek istediğinizden eminmisiniz?')) {
+                $.ajax({
+                    type: 'post',
+                    url: '/acr/blog/delete',
+                    data: 'id=' + id + '&_token={{csrf_token()}}',
+                    success: function () {
+                        $('#' + id).hide(400);
+                    }
+                });
+
+            }
+        }
+    </script>
 @stop

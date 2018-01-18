@@ -1,8 +1,8 @@
-@extends('index')
+@extends('acr_blog.blog')
 @section('header')
     {!! Acr_fl::css() !!}
 @stop
-@section('acr_index')
+@section('acr_blog')
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">BLOG

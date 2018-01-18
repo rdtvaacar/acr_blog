@@ -1,8 +1,8 @@
-@extends('index')
+@extends('acr_blog.blog')
 @section('header')
     <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css">
 @stop
-@section('acr_index')
+@section('acr_blog')
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
@@ -40,9 +40,7 @@
 @stop
 @section('footer')
     <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="/plugins/datatables/dataTables.bootstrap.min.js"></script>
-
-
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $('#data_table').DataTable({
             "paging": true,
@@ -83,5 +81,4 @@
             }
         }
     </script>
-
 @stop

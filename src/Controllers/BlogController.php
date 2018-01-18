@@ -3,6 +3,7 @@
 namespace Acr\Acr_blog\Controllers;
 
 use Acr\Acr_blog\Models\Blog_makale;
+use App\Handlers\Commands\my;
 use DB,
     Input,
     Validator,
@@ -16,13 +17,33 @@ use App\Http\Controllers\Controller;
 
 class BlogController extends Controller
 {
-    function blog_oku(Request $request)
+    function blog_galery(my $my)
+    {
+        $blog_model = new Blog_makale();
+        $blogs      = $blog_model->with(['file'])->get();
+        return view('Acr_blogv::blog_galery', compact('blogs', 'my'));
+    }
+
+    function blogSayYaz($sayi, $yazi)
+    {
+        if (strlen($yazi) < $sayi) {
+            echo $yazi;
+        } else {
+            $yazilacak     = explode(' ', substr($yazi, 0, $sayi));
+            $yazilacakSayi = count($yazilacak);
+            for ($i = 0; $i < $yazilacakSayi - 1; $i++) {
+                echo $yazilacak[$i] . ' ';
+            }
+        }
+    }
+
+    function blog_oku(Request $request,my $my)
     {
         $id         = $request->id;
         $blog_model = new Blog_makale();
         $blog       = $blog_model->with(['file'])->where('id', $id)->first();
         $blogs      = $blog_model->with(['file'])->where('id', '!=', $id)->get();
-        return view('Acr_blogv::blog', compact('blog', 'blogs'));
+        return view('Acr_blogv::blog', compact('blog', 'blogs','my'));
 
     }
 
@@ -116,7 +137,7 @@ class BlogController extends Controller
     {
         $blog_model = new Blog_makale();
         $blogs      = $blog_model->with(['file'])->get();
-        return view('Acr_blogv::index', compact('blogs'))->render();
+        return view('Acr_blogv::index', compact('blogs'));
     }
 
     function delete(Request $request)
