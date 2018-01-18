@@ -34,7 +34,7 @@ class BlogController extends Controller
     function blog_views($my)
     {
         $blog_model = new Blog_makale();
-        $blogs      = $blog_model->with(['file'])->orderBy('sira', 'desc')->get();
+        $blogs      = $blog_model->with(['file'])->orderBy('sira', 'desc')->paginate(30);
         return view('Acr_blogv::blog_views', compact('blogs', 'my'))->render();
     }
 
