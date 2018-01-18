@@ -1,17 +1,17 @@
 <?php
 
 Route::group(['middleware' => ['web']], function () {
-    Route::group(['namespace' => 'Acr\Acr_blog\Controllers', 'prefix' => 'acr/fl'], function () {
+    Route::group(['namespace' => 'Acr\Acr_blog\Controllers', 'prefix' => 'acr/blog'], function () {
         Route::get('/get_file/{acr_file_id}/{file_name}/{loc}', 'FlController@get_file');
-        Route::post('/upload', 'FlController@upload');
-        Route::post('/file/delete', 'FlController@file_delete');
-        Route::get('/acr/acr_blog/', 'FlController@upload');
-        Route::post('/file_header', 'FlController@file_header');
-        Route::get('/download', 'FlController@download');
-        Route::get('/config', 'FlController@config');
-        Route::post('/config/update', 'FlController@config_update');
         Route::group(['middleware' => ['auth']], function () {
-
+            Route::group(['middleware' => ['admin']], function () {
+                Route::get('/', 'BlogController@blog');
+                Route::get('/yeni', 'BlogController@yeni');
+                Route::get('/oku', 'BlogController@blog_oku');
+                Route::post('/create', 'BlogController@create');
+                Route::post('/delete', 'BlogController@delete');
+                Route::post('/file/delete', 'BlogController@file_delete');
+            });
         });
     });
 });

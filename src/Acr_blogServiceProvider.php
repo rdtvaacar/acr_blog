@@ -2,7 +2,7 @@
 
 namespace Acr\Acr_blog;
 
-use Acr\Acr_blog\Controllers\AcrblogController;
+use Acr\Acr_blog\Controllers\BlogController;
 use Illuminate\Support\ServiceProvider;
 
 class Acr_blogServiceProvider extends ServiceProvider
@@ -29,7 +29,7 @@ class Acr_blogServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('Acr_blog', function () {
-            return new AcrblogController();
+            return new BlogController();
         });
     }
 }
