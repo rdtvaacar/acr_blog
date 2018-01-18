@@ -17,17 +17,17 @@ use App\Http\Controllers\Controller;
 
 class BlogController extends Controller
 {
-    function blog_galery()
+    function blog_galery(my $my)
     {
-        $blog_views = self::blog_views();
+        $blog_views = self::blog_views($my);
         return view('Acr_blogv::blog_galery', compact('blog_views'));
     }
 
-    function blog_views(my $my)
+    function blog_views($my)
     {
         $blog_model = new Blog_makale();
         $blogs      = $blog_model->with(['file'])->get();
-        return view('Acr_blogv::blog_galery', compact('blogs', 'my'))->render();
+        return view('Acr_blogv::blog_views', compact('blogs', 'my'))->render();
     }
 
     function blogSayYaz($sayi, $yazi)
