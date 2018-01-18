@@ -1,10 +1,11 @@
 #  LARAVEL - Acr_blog
 ## Gerekli 
 http://image.intervention.io/getting_started/installation
+composer require acr/acr_fl
 ## Kurulum:
 #### composer json : 
 ```
-"acr/acr_blog": "dev-fl"
+"acr/acr_blog": "dev-blog"
 ```
 
 
@@ -16,7 +17,13 @@ http://image.intervention.io/getting_started/installation
 ```
 'Acr_blog' => \Acr\Acr_blog\Facades\Acr_blog::class,
 ```
-
+#### public_html/acr_blog/blog.blade.php
+```php
+@extends('index')  // default extends page
+@section('acr_index') // default yield
+    @yield('acr_blog') // blog yield dont edit
+@stop
+```
 
 ```php
  {!! AcrFile::css() !!}  
