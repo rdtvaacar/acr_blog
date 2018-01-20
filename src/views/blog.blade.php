@@ -1,6 +1,6 @@
 @extends('acr_blog.blog')
 @section('acr_blog')
-    <div class="col-lg-8">
+    <div class="col-md-8">
         <div class="box box-primary">
             <div class="box-header with-border"><strong>{{$blog->name}}</strong></div>
             <div class="box-body">
@@ -8,6 +8,8 @@
                 <?php $img = empty(@$blog->file->file_name) ? '/img/tmp_tb.png' : '/acr/fl/get_file/' . $blog->acr_file_id . '/' . @$blog->file->file_name . '/thumbs'?>
                 <img style="float: left; margin: 10px; width: 300px;" class="img-thumbnail" src="{!! $img !!}"/>
                 {!! $blog->icerik !!}
+
+                
             </div>
         </div>
     </div>
@@ -54,7 +56,6 @@
                         $('#' + id).hide(400);
                     }
                 });
-
             }
         }
     </script>

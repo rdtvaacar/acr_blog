@@ -2,6 +2,8 @@
 
 namespace Acr\Acr_blog\Controllers;
 
+use Acr\Acr_blog\Models\Acr_files_childs;
+use Acr\Acr_blog\Models\Blog_select_files;
 use Acr\Acr_blog\Models\Blog_makale;
 use App\Handlers\Commands\my;
 use DB,
@@ -17,6 +19,78 @@ use App\Http\Controllers\Controller;
 
 class BlogController extends Controller
 {
+
+    function file_add(Request $request)
+    {
+        $file_id  = $request->file_id;
+        $blog_id  = $request->blog_id;
+        $bf_model = new Blog_select_files();
+        $data     = [
+            'blog_id' => $blog_id,
+            'file_id' => $file_id
+        ];
+        $sayi     = $bf_model->where('file_id', $file_id)->where('blog_id', $blog_id)->count();
+        if ($sayi < 1) {
+            $bf_model->insert($data);
+        } else {
+            return 'Dosya zaten eklendi.';
+        }
+
+    }
+
+    function file_delete(Request $request)
+    {
+        $file_id  = $request->file_id;
+        $blog_id  = $request->blog_id;
+        $bf_model = new Blog_select_files();
+        $bf_model->where('file_id', $file_id)->where('blog_id', $blog_id)->delete();
+    }
+
+    function file_select(Request $request, My $my)
+    {
+        $blog_id    = $request->blog_id;
+        $kw         = $request->kw;
+        $file_model = new Acr_files_childs();
+        $bf_model   = new Blog_select_files();
+        $bfs        = $bf_model->where('blog_id', $blog_id)->get();
+        $bf_ids     = [];
+        foreach ($bfs as $bf) {
+            $bf_ids[] = $bf->file_id;
+        }
+
+        $p_dosya_ids = $bf_ids;
+        if (empty($kw)) {
+            $dosyalar = $file_model->paginate(50);
+        } else {
+            $dosyalar = $file_model->where('file_name', 'like', "%$kw%")->orWhere('file_name_org', 'like', "%$kw%")->paginate(50);
+        }
+
+        $dosyalar = View('Acr_blogv::dosya_arama', compact('dosyalar', 'my', 'kw', 'blog_id', 'p_dosya_ids'))->render();
+        return View('Acr_blogv::dosya_arama_sayfasi', compact('blog_id', 'dosyalar'));
+    }
+
+    function file_search(Request $request, My $my)
+    {
+        $kw         = $request->kw;
+        $file_model = new Acr_files_childs();
+        $blog_model = new Blog_makale();
+        $blog_id    = $request->blog_id;
+        $blog       = $blog_model->where('id', $blog_id)->first();
+        $bf_model   = new Blog_select_files();
+        $bfs        = $bf_model->where('blog_id', $blog_id)->get();
+        $bf_ids     = [];
+        foreach ($bfs as $bf) {
+            $bf_ids[] = $bf->file_id;
+        }
+        $blog_dosyalar = $file_model->where('acr_file_id', $blog->acr_file_id)->orWhereIn('id', $bf_ids)->get();
+        $p_dosya_ids   = [];
+        foreach ($blog_dosyalar as $p_dosya) {
+            $p_dosya_ids[] = $p_dosya->acr_file_child_id;
+        }
+        $dosyalar = $file_model->where('file_name', 'like', "%$kw%")->orWhere('file_name_org', 'like', "%$kw%")->paginate(50);
+        return View('Acr_blogv::dosya_arama', compact('dosyalar', 'my', 'kw', 'blog_id', 'p_dosya_ids'))->render();
+    }
+
     function sira_update(Request $request)
     {
         $sira  = $request->sira;
@@ -55,9 +129,17 @@ class BlogController extends Controller
     {
         $id         = $request->id;
         $blog_model = new Blog_makale();
+        $fl_model   = new Acr_files_childs();
         $blog       = $blog_model->with(['file'])->where('id', $id)->first();
         $blogs      = $blog_model->with(['file'])->where('id', '!=', $id)->orderBy('sira', 'desc')->paginate(20);
-        return view('Acr_blogv::blog', compact('blog', 'blogs', 'my'));
+        $bf_model   = new Blog_select_files();
+        $bfs        = $bf_model->where('blog_id', $id)->get();
+        $bf_ids     = [];
+        foreach ($bfs as $bf) {
+            $bf_ids[] = $bf->file_id;
+        }
+        $files = $fl_model->where('acr_file_id', $blog->acr_file_id)->orWhereIn('id', $bf_ids)->get();
+        return view('Acr_blogv::blog', compact('blog', 'blogs', 'my', 'files'));
 
     }
 
@@ -131,6 +213,7 @@ class BlogController extends Controller
         $id         = $request->id;
         $blog_model = new Blog_makale();
         $blog       = $blog_model->with(['file'])->where('id', $id)->first();
+        $fl_model   = new Acr_files_childs();
         if (empty($blog->acr_file_id)) {
             $acr_file_id = Acr_fl::acr_file_id();
             $data        = [
@@ -142,16 +225,24 @@ class BlogController extends Controller
         } else {
             $acr_file_id = $blog->acr_file_id;
         }
-        $fl_data = [
+        $fl_data  = [
             'acr_file_id' => $acr_file_id
         ];
-        return view('Acr_blogv::yeni', compact('blog', 'fl_data', 'acr_file_id'));
+        $bf_model = new Blog_select_files();
+        $bfs      = $bf_model->where('blog_id', $id)->get();
+        $bf_ids   = [];
+        foreach ($bfs as $bf) {
+            $bf_ids[] = $bf->file_id;
+        }
+        $files = $fl_model->where('acr_file_id', $acr_file_id)->orWhereIn('id', $bf_ids)->get();
+        return view('Acr_blogv::yeni', compact('blog', 'fl_data', 'acr_file_id', 'files'));
     }
 
     function blog()
     {
         $blog_model = new Blog_makale();
         $blogs      = $blog_model->with(['file'])->get();
+
         return view('Acr_blogv::index', compact('blogs'));
     }
 

@@ -3,7 +3,7 @@
         <div class="box box-primary">
             <div class="box-header with-border"><strong>{{$blog->name}}</strong></div>
             <div class="box-body">
-                <div style="text-align: center;">
+                <div style="text-align: center; width: 100%">
                     <a href="/acr/blog/oku?id={{$blog->id}}"> {!! Acr_fl::views_image($blog->acr_file_id,$blog->file,'thumbs') !!}</a>
                 </div>
                 <div style="padding-top: 10px; text-indent:25px;">{{$my->sayYaz(200,$blog->icerik)}}</div>

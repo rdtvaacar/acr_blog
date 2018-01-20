@@ -30,6 +30,11 @@
                     <button class="btn btn-block btn-primary">BİLGİLERİ KAYDET</button>
                     <br>
                 </form>
+                <h3>Galeri Ekle</h3>
+                <div style="float: left;">{!! Acr_fl::form() !!}</div>
+                <div style="float: right;" onclick="acr_blog_dosya_sec({{$blog->id}})" class="btn btn-primary btn-sm">Dosyalardan Seç</div>
+                {!! Acr_fl::files_galery($acr_file_id,$blog->files) !!}
+
             </div>
         </div>
     </div>
@@ -44,5 +49,9 @@
             CKEDITOR.replace('editor1')
             //bootstrap WYSIHTML5 - text editor
         })
+
+        function acr_blog_dosya_sec(blog_id) {
+            window.open('/acr/blog/file/select?blog_id=' + blog_id, "popupwindowname", "toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no, width=1050,height=750,left=200 ,top=200");
+        }
     </script>
 @stop

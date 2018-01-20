@@ -7,6 +7,10 @@ Route::group(['middleware' => ['web']], function () {
         Route::group(['middleware' => ['auth']], function () {
             Route::group(['middleware' => ['admin']], function () {
                 Route::post('/sira/update', 'BlogController@sira_update');
+                Route::get('/file/select', 'BlogController@file_select');
+                Route::post('/file/search', 'BlogController@file_search');
+                Route::post('/file/add', 'BlogController@file_add');
+                Route::post('/file/delete', 'BlogController@file_delete');
                 Route::get('/list', 'BlogController@blog');
                 Route::get('/yeni', 'BlogController@yeni');
                 Route::post('/create', 'BlogController@create');

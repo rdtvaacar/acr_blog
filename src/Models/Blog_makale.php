@@ -16,4 +16,6 @@ class Blog_makale extends Model
     {
         return $this->hasOne('Acr\Acr_fl\Models\Acr_files_childs', 'acr_file_id', 'acr_file_id');
     }
+
+
 }
