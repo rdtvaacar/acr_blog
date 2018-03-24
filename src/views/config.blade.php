@@ -4,7 +4,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">ACR FL CONFİG PAGE</div>
             <div class="box-body">
-                <form action="/acr/blogconfig/update" method="post">
+                <form action="/acr/blog/config/update" method="post">
                     {{csrf_field()}}
                     <table class="table table-hover">
                         <tr>

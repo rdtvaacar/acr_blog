@@ -6,6 +6,7 @@
                 <div style="text-align: center; width: 100%">
                     <a href="/acr/blog/oku?id={{$blog->id}}"> {!! Acr_fl::views_image($blog->acr_file_id,$blog->file,'thumbs') !!}</a>
                 </div>
+                <div style="clear:both;"></div>
                 <div style="padding-top: 10px; text-indent:25px;">{{$my->sayYaz(200,$blog->icerik)}}</div>
             </div>
             <div class="box-footer">

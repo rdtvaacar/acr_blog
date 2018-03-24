@@ -9,13 +9,9 @@
                 <a class="btn btn-primary btn-sm" style="float: right;" href="/acr/blog/yeni">YENİ</a></div>
             <div class="box-body">
                 @if(!empty($blog->file))
-                    {!! Acr_fl::files_galery($acr_file_id) !!}
-                    <div style="display: none" id="file">
-                        {!! Acr_fl::form_one() !!}
-                    </div>
-                @else
-                    {!! Acr_fl::form_one() !!}
+                    {!! Acr_fl::views_image($acr_file_id,$blog->file,'thumbs') !!}
                 @endif
+                <div style="clear:both;"></div>
                 <form method="post" enctype="multipart/form-data" action="/acr/blog/create">
                     {{csrf_field()}}
 
@@ -33,8 +29,9 @@
                 <h3>Galeri Ekle</h3>
                 <div style="float: left;">{!! Acr_fl::form() !!}</div>
                 <div style="float: right;" onclick="acr_blog_dosya_sec({{$blog->id}})" class="btn btn-primary btn-sm">Dosyalardan Seç</div>
-                {!! Acr_fl::files_galery($acr_file_id,$blog->files) !!}
-
+                <div style="clear:both;"></div>
+<br>
+                {!! Acr_fl::files_galery($acr_file_id,$files) !!}
             </div>
         </div>
     </div>

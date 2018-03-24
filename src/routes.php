@@ -12,6 +12,7 @@ Route::group(['middleware' => ['web']], function () {
                 Route::post('/file/add', 'BlogController@file_add');
                 Route::post('/file/delete', 'BlogController@file_delete');
                 Route::get('/list', 'BlogController@blog');
+                Route::get('/config', 'BlogController@config');
                 Route::get('/yeni', 'BlogController@yeni');
                 Route::post('/create', 'BlogController@create');
                 Route::post('/delete', 'BlogController@delete');
